@@ -21,6 +21,9 @@ body {
     max-width: 1300px;
     margin: 0 auto;
     padding: 20px;
+    /* Adiciona padding horizontal mínimo para evitar que o conteúdo toque as bordas */
+    padding-left: 10px; 
+    padding-right: 10px;
 }
 
 /* --- Tela de Login --- */
@@ -213,7 +216,6 @@ header h2 {
 #totalEntradas { color: #2ecc71; }
 #totalSaidas { color: #e74c3c; }
 
-/* NOVO: Estilo Saldo Pendente */
 .saldo-pendente {
     display: block;
     margin-top: 10px;
@@ -248,13 +250,16 @@ header h2 {
 
 /* ATUALIZAÇÃO: Container da Tabela com Scroll */
 .table-container {
+    overflow-x: auto; /* PERMITE ROLAGEM HORIZONTAL APENAS NA TABELA */
     overflow-y: auto;
-    max-height: 450px; /* Altura máxima para a tabela */
+    max-height: 450px; 
     width: 100%;
 }
 
 #transactionList {
     width: 100%;
+    /* Mínimo de largura para o layout não colapsar em telas pequenas */
+    min-width: 600px; 
     border-collapse: collapse;
     margin-top: 15px;
 }
@@ -266,7 +271,7 @@ header h2 {
     text-align: left;
     font-size: 14px;
     vertical-align: middle;
-    white-space: nowrap; /* Evita quebra de linha */
+    white-space: nowrap; 
 }
 
 /* ATUALIZAÇÃO: Cabeçalho Fixo (Sticky) */
@@ -323,7 +328,7 @@ header h2 {
 
 /* --- Modal --- */
 .modal {
-    display: none; /* Alterado por JS */
+    display: none; 
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -385,43 +390,71 @@ header h2 {
 /* --- Responsividade --- */
 
 @media (max-width: 992px) {
+    /* Layout de coluna única para o dashboard */
     .dashboard {
         grid-template-columns: 1fr;
     }
     #saldoCard, #actionsCard, #chartCard, #transactionsCard {
         grid-column: 1 / -1;
     }
-}
 
-@media (max-width: 768px) {
-    header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-    }
-    
+    /* Empilha botões de ação global */
     .actions-bar {
         flex-direction: column;
     }
     .actions-bar button {
         width: 100%;
     }
+}
 
-    .form-card {
-        padding: 20px;
+@media (max-width: 768px) {
+    /* Ajustes no cabeçalho */
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
     }
 
-    /* Em telas pequenas, remove o cabeçalho fixo pois pode ser problemático */
+    /* Torna os botões de ação na tabela mais compactos */
+    .action-buttons button {
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+    
+    /* Esconde a coluna 'Categoria' */
+    #transactionList th:nth-child(3), 
+    #transactionList td:nth-child(3) {
+        display: none; 
+    }
+    
+    /* Remove o cabeçalho fixo pois pode quebrar o layout no mobile */
     #transactionList th {
         position: relative;
     }
 }
 
 @media (max-width: 480px) {
+    /* Esconde colunas adicionais para priorizar 'Nome', 'Valor' e 'Status' */
     #transactionList th:nth-child(2), 
-    #transactionList td:nth-child(2),
-    #transactionList th:nth-child(3), 
-    #transactionList td:nth-child(3) {
-        display: none; /* Esconde tipo e categoria em telas pequenas */
+    #transactionList td:nth-child(2), /* Esconde Tipo */
+    #transactionList th:nth-child(5), 
+    #transactionList td:nth-child(5) {
+        display: none; /* Esconde Data */
+    }
+    
+    /* Ajusta fonte do saldo */
+    #saldoCard h2 {
+        font-size: 2rem;
+    }
+    
+    /* Torna as ações ainda mais compactas */
+    .action-buttons {
+        gap: 2px;
+        flex-wrap: nowrap;
+    }
+    
+    .action-buttons button {
+         margin-right: 0;
+         padding: 5px 8px; 
     }
 }
